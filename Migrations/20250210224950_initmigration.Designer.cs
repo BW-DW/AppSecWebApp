@@ -12,8 +12,8 @@ using WebApplication1.Model;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20241107111719_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250210224950_initmigration")]
+    partial class initmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
