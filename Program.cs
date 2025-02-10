@@ -9,6 +9,15 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<AuthDbContext>();
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AuthDbContext>();
 
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = false;       // No number required
+    options.Password.RequiredLength = 12;         // Minimum length of 8
+    options.Password.RequireNonAlphanumeric = false; // No special character required
+    options.Password.RequireUppercase = false;   // No uppercase letter required
+    options.Password.RequireLowercase = false;   // No lowercase letter required
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
