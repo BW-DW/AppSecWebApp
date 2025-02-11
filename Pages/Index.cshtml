@@ -8,3 +8,46 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+@if (User.Identity.IsAuthenticated && Model.CurrentUser != null)
+{
+    <h2>User Information</h2>
+    <table class="table table-bordered">
+        <tr>
+            <th>First Name</th>
+            <td>@Model.CurrentUser.FirstName</td>
+        </tr>
+        <tr>
+            <th>Last Name</th>
+            <td>@Model.CurrentUser.LastName</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>@Model.CurrentUser.Email</td>
+        </tr>
+        <tr>
+            <th>Phone Number</th>
+            <td>@Model.CurrentUser.PhoneNumber</td>
+        </tr>
+        <tr>
+            <th>Billing Address</th>
+            <td>@Model.CurrentUser.BillingAddress</td>
+        </tr>
+        <tr>
+            <th>Shipping Address</th>
+            <td>@Model.CurrentUser.ShippingAddress</td>
+        </tr>
+        <tr>
+            <th>Credit Card</th>
+            <td>@Model.DecryptedCreditCard</td>
+        </tr>
+        <tr>
+            <th>Hashed Password</th>
+            <td>@Model.HashedPassword</td>
+        </tr>
+    </table>
+}
+else
+{
+    <p>You are not logged in.</p>
+}
