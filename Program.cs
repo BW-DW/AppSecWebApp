@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<AuthDbContext>();
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AuthDbContext>();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AuthDbContext>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -17,6 +17,8 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireUppercase = false;   // No uppercase letter required
     options.Password.RequireLowercase = false;   // No lowercase letter required
 });
+
+builder.Services.AddDataProtection();
 
 var app = builder.Build();
 

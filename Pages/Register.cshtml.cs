@@ -1,19 +1,21 @@
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using WebApplication1.Model;
 using WebApplication1.ViewModels;
 
 namespace WebApplication1.Pages
 {
     public class RegisterModel : PageModel
     {
-        private UserManager<IdentityUser> userManager { get; }
-        private SignInManager<IdentityUser> signInManager { get; }
+        private UserManager<ApplicationUser> userManager { get; }
+        private SignInManager<ApplicationUser> signInManager { get; }
 
         [BindProperty]
         public Register RModel { get; set; }
 
-        public RegisterModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public RegisterModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             this.userManager = userManager; this.signInManager = signInManager;
         }
@@ -27,10 +29,19 @@ namespace WebApplication1.Pages
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser()
+                var dataProtectionProvider = DataProtectionProvider.Create("EncryptData");
+                var protector = dataProtectionProvider.CreateProtector("MySecretKey");
+
+                var user = new ApplicationUser()
                 {
-                    UserName = RModel.Email,
-                    Email = RModel.Email
+                    UserName = RModel.FirstName + RModel.LastName,
+                    Email = RModel.Email,
+                    FirstName = RModel.FirstName,
+                    LastName = RModel.LastName,
+                    PhoneNumber = RModel.PhoneNumber,
+                    BillingAddress = RModel.BillingAddress,
+                    ShippingAddress = RModel.ShippingAddress,
+                    CreditCard = protector.Protect(RModel.CreditCard)
                 };
                 var result = await userManager.CreateAsync(user, RModel.Password); if (result.Succeeded)
                 {

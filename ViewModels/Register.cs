@@ -12,6 +12,26 @@ namespace WebApplication1.ViewModels
         [DataType(DataType.Password)]
         [Compare(nameof(Password), ErrorMessage = "Password and confirmation password does not match")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        public string FirstName { get; set; }
+
+        [Required]
+        public string LastName { get; set; }
+
+        [Required]
+        [Phone]
+        public string PhoneNumber { get; set; }
+
+        [Required]
+        [DataType(DataType.CreditCard)]
+        public string CreditCard { get; set; }
+
+        [Required]
+        public string BillingAddress { get; set; }
+
+        [Required]
+        public string ShippingAddress { get; set; } // ✅ Allow all special characters
     }
 
 }
