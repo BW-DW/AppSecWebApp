@@ -1,5 +1,6 @@
 ﻿@page
 @model IndexModel
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
     ViewData["Title"] = "Home page";
 }
@@ -12,6 +13,15 @@
 @if (User.Identity.IsAuthenticated && Model.CurrentUser != null)
 {
     <h2>User Information</h2>
+
+    @if (!string.IsNullOrEmpty(Model.CurrentUser.ProfilePicture))
+    {
+        <div>
+            <h3>Profile Picture</h3>
+            <img src="@Url.Content("~/images/profiles/" + Model.CurrentUser.ProfilePicture)" alt="User Profile Image" class="img-fluid" style="max-width: 150px; border-radius: 50%;" />
+        </div>
+    }
+
     <table class="table table-bordered">
         <tr>
             <th>First Name</th>

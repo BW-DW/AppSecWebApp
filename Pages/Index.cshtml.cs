@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,6 +11,8 @@ namespace WebApplication1.Pages
         private readonly ILogger<IndexModel> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDataProtector _protector;
+        private readonly IHttpContextAccessor contxt;
+
 
         public ApplicationUser CurrentUser { get; set; }
         public string DecryptedCreditCard { get; set; }
@@ -33,8 +35,29 @@ namespace WebApplication1.Pages
 
         //}
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
+            var userId = HttpContext.Session.GetString("UserId");
+            var sessionId = HttpContext.Session.GetString("SessionId");
+            Console.WriteLine("userId", userId, "| sessionid", sessionId);
+
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(sessionId))
+            {
+                return RedirectToPage("Login"); // Redirect if session expired
+            }
+
+            if (HttpContext.Session.GetString("UserEmail") == null)  // ✅ Check if session exists
+            {
+                return RedirectToPage("Login");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null || user.SessionId != sessionId)
+            {
+                HttpContext.Session.Clear(); // Invalidate session
+                return RedirectToPage("Login"); // Redirect if session is invalid
+            }
+
             if (User.Identity.IsAuthenticated)
             {
                 CurrentUser = await _userManager.GetUserAsync(User);
@@ -56,6 +79,8 @@ namespace WebApplication1.Pages
                     HashedPassword = CurrentUser.PasswordHash ?? "Password hash not available";
                 }
             }
+
+            return Page();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using WebApplication1.Model;
 @inject SignInManager<ApplicationUser> SignInManager
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +25,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 
                     @{
-                        if (SignInManager.IsSignedIn(User))
+                        if (HttpContextAccessor.HttpContext.Session.GetString("UserEmail") != null)
                         {
                                     <ul class="navbar-nav flex-grow-1">
                                         <li class="nav-item">
@@ -32,7 +33,6 @@
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                                            <a class="nav-link text-dark" asp-area="" asp-page="/Register">register</a>
                                         </li>
                                     </ul>
                                     <ul class="navbar-nav d-flex justify-content-end">
@@ -65,6 +65,13 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+
+            @if (HttpContextAccessor.HttpContext.Session.GetString("UserEmail") != null)
+            {
+                <p>Welcome, @HttpContextAccessor.HttpContext.Session.GetString("UserEmail")</p>
+                <a asp-page="/Logout">Logout</a>
+            }
+
             @RenderBody()
         </main>
     </div>

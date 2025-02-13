@@ -32,6 +32,9 @@ namespace WebApplication1.ViewModels
 
         [Required]
         public string ShippingAddress { get; set; } // ✅ Allow all special characters
+
+        [Required]
+        public IFormFile? ProfilePicture { get; set; }
     }
 
 }

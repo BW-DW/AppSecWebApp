@@ -29,10 +29,16 @@
                     <span asp-validation-for="RModel.Email" class="text-danger"></span>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label" asp-for="RModel.Password">Password</label>
-                    <input type="password" asp-for="RModel.Password" class="form-control" required />
+                <div class="form-group">
+                    <label asp-for="RModel.Password"></label>
+                    <input asp-for="RModel.Password" type="password" class="form-control" id="passwordInput" required />
                     <span asp-validation-for="RModel.Password" class="text-danger"></span>
+                    <small id="passwordHelp" class="form-text text-muted"></small>
+
+                    <div class="progress mt-2">
+                        <div id="passwordStrengthBar" class="progress-bar" role="progressbar" style="width: 0%;"></div>
+                    </div>
+                    <small id="passwordHelp" class="form-text"></small>
                 </div>
 
                 <div class="mb-3">
@@ -65,10 +71,86 @@
                     <span asp-validation-for="RModel.CreditCard" class="text-danger"></span>
                 </div>
 
+                <div class="form-group">
+                    <label asp-for="RModel.ProfilePicture">Profile Picture</label>
+                    <input asp-for="RModel.ProfilePicture" type="file" class="form-control" />
+                    <span asp-validation-for="RModel.ProfilePicture" class="text-danger"></span>
+                </div>
+
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Register</button>
                 </div>
             </form>
+
+            <script>
+            document.getElementById("passwordInput").addEventListener("input", function () {
+                var password = this.value;
+                var passwordHelp = document.getElementById("passwordHelp");
+    
+                var errors = [];
+                if (password.length < 8) errors.push("At least 8 characters required.");
+                if (!/[A-Z]/.test(password)) errors.push("At least one uppercase letter required.");
+                if (!/[a-z]/.test(password)) errors.push("At least one lowercase letter required.");
+                if (!/[0-9]/.test(password)) errors.push("At least one digit required.");
+                if (!/[!#$%^&*(),.?":{}|<>]/.test(password)) errors.push("At least one special character required.");
+    
+                passwordHelp.innerHTML = errors.length > 0 ? errors.join("<br>") : "Password is valid.";
+                passwordHelp.style.color = errors.length > 0 ? "red" : "green";
+            });
+            </script>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    var passwordInput = document.getElementById("passwordInput");
+                    var passwordStrengthText = document.getElementById("passwordHelp");
+                    var passwordStrengthBar = document.getElementById("passwordStrengthBar");
+
+                    passwordInput.addEventListener("input", function () {
+                        var password = this.value;
+                        var strength = 0;
+                        var messages = [];
+
+                        // ✅ Check password strength criteria
+                        if (password.length >= 8) strength++;
+                        else messages.push("At least 8 characters required.");
+
+                        if (/[A-Z]/.test(password)) strength++;
+                        else messages.push("At least one uppercase letter required.");
+
+                        if (/[a-z]/.test(password)) strength++;
+                        else messages.push("At least one lowercase letter required.");
+
+                        if (/[0-9]/.test(password)) strength++;
+                        else messages.push("At least one digit required.");
+
+                        if (/[!#$%^&*(),.?\":{}|<>]/.test(password)) strength++;
+                        else messages.push("At least one special character required.");
+
+                        // ✅ Set password strength feedback
+                        var strengthText = "";
+                        var strengthColor = "";
+                        var strengthWidth = "0%";
+
+                        if (strength === 5) {
+                            strengthText = "Strong";
+                            strengthColor = "bg-success";
+                            strengthWidth = "100%";
+                        } else if (strength >= 3) {
+                            strengthText = "Moderate";
+                            strengthColor = "bg-warning";
+                            strengthWidth = "60%";
+                        } else {
+                            strengthText = "Weak";
+                            strengthColor = "bg-danger";
+                            strengthWidth = "30%";
+                        }
+
+                        passwordStrengthText.innerHTML = messages.length === 0 ? `<strong>${strengthText}</strong>` : messages.join("<br>");
+                        passwordStrengthBar.style.width = strengthWidth;
+                        passwordStrengthBar.className = `progress-bar ${strengthColor}`;
+                    });
+                });
+            </script>
         </div>
     </div>
 </div>

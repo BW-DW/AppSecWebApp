@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using WebApplication1.Models;
 
 namespace WebApplication1.Model
 {
@@ -13,6 +14,7 @@ namespace WebApplication1.Model
         {
             _configuration = configuration;
         }
+        public DbSet<AuditLog> AuditLogs { get; set; } // for auditlog db
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

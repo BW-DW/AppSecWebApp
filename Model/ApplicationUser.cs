@@ -23,5 +23,10 @@ namespace WebApplication1.Model
 
         [Required]
         public string ShippingAddress { get; set; } // Special chars allowed
+
+        [Required]
+        public string? ProfilePicture { get; set; }
+
+        public string? SessionId { get; set; }
     }
 }

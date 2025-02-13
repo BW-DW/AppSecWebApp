@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using WebApplication1.Model;
+using WebApplication1.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,9 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<AuthDbContext>();
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AuthDbContext>();
+
+builder.Services.AddScoped<AuditLoggerService>();
+builder.Services.AddHttpContextAccessor();  // grab user ip
 
 builder.Services.AddAuthentication("MyCookieAuth").AddCookie("MyCookieAuth", options
 =>
@@ -34,14 +38,25 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
-    options.Password.RequireDigit = false;       // No number required
-    options.Password.RequiredLength = 12;         // Minimum length of 8
-    options.Password.RequireNonAlphanumeric = false; // No special character required
-    options.Password.RequireUppercase = false;   // No uppercase letter required
-    options.Password.RequireLowercase = false;   // No lowercase letter required
+    options.Password.RequireDigit = true;       
+    options.Password.RequiredLength = 12;         
+    options.Password.RequireNonAlphanumeric = true; 
+    options.Password.RequireUppercase = true;   
+    options.Password.RequireLowercase = true;
+
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); // Lockout duration
+    options.Lockout.MaxFailedAccessAttempts = 3; // Max attempts before lockout
+    options.Lockout.AllowedForNewUsers = true; // Enable lockout for all users
 });
 
 builder.Services.AddDataProtection();
+
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddDistributedMemoryCache(); //save session in memory
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(100);
+});
 
 var app = builder.Build();
 
@@ -55,6 +70,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseSession();
 
 app.UseRouting();
 
