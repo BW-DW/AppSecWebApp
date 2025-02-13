@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using WebApplication1.Pages;
 using WebApplication1.Model;
 using WebApplication1.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication1.Services
 {

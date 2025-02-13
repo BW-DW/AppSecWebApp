@@ -16,6 +16,8 @@ namespace WebApplication1.Model
         }
         public DbSet<AuditLog> AuditLogs { get; set; } // for auditlog db
 
+        public DbSet<PasswordHistory> PasswordHistories { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connectionString = _configuration.GetConnectionString("AuthConnectionString"); optionsBuilder.UseSqlServer(connectionString);

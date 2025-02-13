@@ -56,6 +56,7 @@ namespace WebApplication1.Pages
 
             if (signInResult.Succeeded)
             {
+
                 if (await userManager.GetTwoFactorEnabledAsync(user))
                 {
                     // Generate a 2FA token

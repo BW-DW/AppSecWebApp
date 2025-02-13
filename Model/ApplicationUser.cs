@@ -28,5 +28,10 @@ namespace WebApplication1.Model
         public string? ProfilePicture { get; set; }
 
         public string? SessionId { get; set; }
+
+        public DateTime? PasswordLastChanged { get; set; } = DateTime.UtcNow;
+
+        // New: List of password history
+        public virtual List<PasswordHistory> PasswordHistories { get; set; } = new();
     }
 }

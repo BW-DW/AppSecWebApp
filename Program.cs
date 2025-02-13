@@ -62,7 +62,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddDistributedMemoryCache(); //save session in memory
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromSeconds(15);
+    options.IdleTimeout = TimeSpan.FromSeconds(60);
 });
 
 var app = builder.Build();
