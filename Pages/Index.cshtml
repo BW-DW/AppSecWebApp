@@ -56,6 +56,14 @@
             <td>@Model.HashedPassword</td>
         </tr>
     </table>
+    <p><strong>Email:</strong> @Model.CurrentUser?.Email</p>
+    <p><strong>Two-Factor Authentication:</strong> @(Model.CurrentUser.TwoFactorEnabled ? "Enabled" : "Disabled")</p>
+
+    <form method="post">
+        <button type="submit" asp-page-handler="Toggle2FA" class="btn btn-primary">
+            @(Model.CurrentUser.TwoFactorEnabled ? "Disable 2FA" : "Enable 2FA")
+        </button>
+    </form>
 }
 else
 {

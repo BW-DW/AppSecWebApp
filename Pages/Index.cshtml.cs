@@ -82,5 +82,16 @@ namespace WebApplication1.Pages
 
             return Page();
         }
+
+        public async Task<IActionResult> OnPostToggle2FAAsync()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                user.TwoFactorEnabled = !user.TwoFactorEnabled;
+                await _userManager.UpdateAsync(user);
+            }
+            return RedirectToPage();
+        }
     }
 }

@@ -1,0 +1,16 @@
+﻿@page
+@model Verify2FAModel
+@{
+    ViewData["Title"] = "Verify Two-Factor Authentication";
+}
+
+<h2>Two-Factor Authentication</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label for="TwoFactorCode">Enter your authentication code</label>
+        <input asp-for="TwoFactorCode" class="form-control" />
+        <span asp-validation-for="TwoFactorCode" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Verify</button>
+</form>

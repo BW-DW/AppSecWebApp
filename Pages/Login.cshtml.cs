@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Security.Claims;
@@ -17,12 +18,14 @@ namespace WebApplication1.Pages
 		private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly AuditLoggerService auditLogger;
+        private readonly IEmailSender emailSender;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, AuditLoggerService auditLogger)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, AuditLoggerService auditLogger, IEmailSender emailSender)
 		{
 			this.signInManager = signInManager;
             this.userManager = userManager;
             this.auditLogger = auditLogger;
+            this.emailSender = emailSender;
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -53,20 +56,36 @@ namespace WebApplication1.Pages
 
             if (signInResult.Succeeded)
             {
-                // Generate a new session ID
+                if (await userManager.GetTwoFactorEnabledAsync(user))
+                {
+                    // Generate a 2FA token
+                    var token = await userManager.GenerateTwoFactorTokenAsync(user, TokenOptions.DefaultEmailProvider);
+
+                    // Send the token via email
+                    await emailSender.SendEmailAsync(user.Email, "Your 2FA Code", $"Your 2FA code is: {token}");
+
+                    // Store user ID in session for verification later
+                    HttpContext.Session.SetString("2FAUserId", user.Id);
+
+                    return RedirectToPage("Verify2FA");
+                }
+
+                // ✅ Handle normal login (if 2FA is NOT enabled)
                 string newSessionId = Guid.NewGuid().ToString();
                 user.SessionId = newSessionId;
                 await userManager.UpdateAsync(user);
 
-                HttpContext.Session.SetString("UserEmail", user.Email);  // ✅ Store User Email in Session
-                HttpContext.Session.SetString("UserId", user.Id);        // ✅ Store User ID in Session
+                HttpContext.Session.SetString("UserEmail", user.Email);
+                HttpContext.Session.SetString("UserId", user.Id);
                 HttpContext.Session.SetString("UserName", user.UserName);
                 HttpContext.Session.SetString("SessionId", user.SessionId);
 
                 await userManager.ResetAccessFailedCountAsync(user);
                 await auditLogger.LogActivityAsync(LModel.Email, $"User {user.UserName} logged in successfully.");
-                return RedirectToPage("Index");
+
+                return RedirectToPage("Index"); // ✅ Return here to stop execution
             }
+
 
             // Increment failed attempt count
             await auditLogger.LogActivityAsync(LModel.Email, $"Failed login attempt for user {user.UserName}.");
