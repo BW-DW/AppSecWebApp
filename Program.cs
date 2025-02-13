@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using WebApplication1.Model;
 using WebApplication1.Services;
 
@@ -8,10 +9,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<AuthDbContext>();
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AuthDbContext>();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<AuthDbContext>()
+    .AddDefaultTokenProviders();  // to enable token-based email confirmation
 
 builder.Services.AddScoped<AuditLoggerService>();
 builder.Services.AddHttpContextAccessor();  // grab user ip
+
+builder.Services.AddScoped<EmailSender>();
+// Register EmailSender
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 builder.Services.AddAuthentication("MyCookieAuth").AddCookie("MyCookieAuth", options
 =>
@@ -55,7 +62,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddDistributedMemoryCache(); //save session in memory
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromSeconds(100);
+    options.IdleTimeout = TimeSpan.FromSeconds(15);
 });
 
 var app = builder.Build();

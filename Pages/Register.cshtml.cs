@@ -8,6 +8,8 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using System;
+using Microsoft.AspNetCore.Identity.UI.Services;
+
 
 namespace WebApplication1.Pages
 {
@@ -16,13 +18,15 @@ namespace WebApplication1.Pages
         private UserManager<ApplicationUser> userManager { get; }
         private SignInManager<ApplicationUser> signInManager { get; }
         private readonly IWebHostEnvironment _environment; // ✅ To access `wwwroot`
+        private readonly IEmailSender _emailSender;
 
         [BindProperty]
         public Register RModel { get; set; }
+        private static Random random = new Random();
 
-        public RegisterModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IWebHostEnvironment environment)
+        public RegisterModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IWebHostEnvironment environment, IEmailSender emailSender)
         {
-            this.userManager = userManager; this.signInManager = signInManager; this._environment = environment;
+            this.userManager = userManager; this.signInManager = signInManager; this._environment = environment; this._emailSender = emailSender;
         }
 
         public void OnGet()
@@ -87,14 +91,27 @@ namespace WebApplication1.Pages
                 var result = await userManager.CreateAsync(user, RModel.Password); 
                 if (result.Succeeded)
                 {
-                    await signInManager.SignInAsync(user, false);
 
-                    // ✅ Create session after successful registration
-                    HttpContext.Session.SetString("UserEmail", user.Email);
-                    HttpContext.Session.SetString("UserId", user.Id);
-                    HttpContext.Session.SetString("UserName", user.UserName);
+                    // Generate a random 6-digit code
+                    string verificationCode = random.Next(100000, 999999).ToString();
 
-                    return RedirectToPage("Index");
+                    // Store the code temporarily in session
+                    HttpContext.Session.SetString("VerificationCode", verificationCode);
+                    HttpContext.Session.SetString("UserEmail", RModel.Email);
+                    HttpContext.Session.SetString("FirstName", RModel.FirstName);
+                    HttpContext.Session.SetString("LastName", RModel.LastName);
+                    HttpContext.Session.SetString("PhoneNumber", RModel.PhoneNumber);
+                    HttpContext.Session.SetString("BillingAddress", RModel.BillingAddress);
+                    HttpContext.Session.SetString("ShippingAddress", RModel.ShippingAddress);
+                    HttpContext.Session.SetString("CreditCard", RModel.CreditCard);
+                    HttpContext.Session.SetString("Password", RModel.Password);
+
+                    // Send verification email
+                    await _emailSender.SendEmailAsync(RModel.Email, "Email Verification Code",
+                    $"Your verification code is: <strong>{verificationCode}</strong>");
+
+                    // Redirect to verification page
+                    return RedirectToPage("ConfirmEmail");
                 }
                 foreach (var error in result.Errors)
                 {
