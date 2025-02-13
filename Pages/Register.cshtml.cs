@@ -86,32 +86,15 @@ namespace WebApplication1.Pages
                     BillingAddress = RModel.BillingAddress,
                     ShippingAddress = RModel.ShippingAddress,
                     CreditCard = protector.Protect(RModel.CreditCard),
-                    ProfilePicture = uniqueFileName // ✅ Store filename in DB
+                    ProfilePicture = uniqueFileName, // ✅ Store filename in DB
+                    EmailConfirmed = true
                 };
                 var result = await userManager.CreateAsync(user, RModel.Password); 
                 if (result.Succeeded)
                 {
+                    await signInManager.SignInAsync(user, true);
 
-                    // Generate a random 6-digit code
-                    string verificationCode = random.Next(100000, 999999).ToString();
-
-                    // Store the code temporarily in session
-                    HttpContext.Session.SetString("VerificationCode", verificationCode);
-                    HttpContext.Session.SetString("UserEmail", RModel.Email);
-                    HttpContext.Session.SetString("FirstName", RModel.FirstName);
-                    HttpContext.Session.SetString("LastName", RModel.LastName);
-                    HttpContext.Session.SetString("PhoneNumber", RModel.PhoneNumber);
-                    HttpContext.Session.SetString("BillingAddress", RModel.BillingAddress);
-                    HttpContext.Session.SetString("ShippingAddress", RModel.ShippingAddress);
-                    HttpContext.Session.SetString("CreditCard", RModel.CreditCard);
-                    HttpContext.Session.SetString("Password", RModel.Password);
-
-                    // Send verification email
-                    await _emailSender.SendEmailAsync(RModel.Email, "Email Verification Code",
-                    $"Your verification code is: <strong>{verificationCode}</strong>");
-
-                    // Redirect to verification page
-                    return RedirectToPage("ConfirmEmail");
+                    return RedirectToPage("Login");
                 }
                 foreach (var error in result.Errors)
                 {
