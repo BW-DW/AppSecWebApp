@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
-using WebApplication1.Model;
-using WebApplication1.Services;
+using BookWorms.Model;
+using BookWorms.Services;
 
 public class Verify2FAModel : PageModel
 {

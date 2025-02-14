@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
-using WebApplication1.Model;
+using BookWorms.Model;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 
-namespace WebApplication1.Pages
+namespace BookWorms.Pages
 {
     public class ChangePasswordModel : PageModel
     {

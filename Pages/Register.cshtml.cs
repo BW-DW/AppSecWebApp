@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using WebApplication1.Model;
-using WebApplication1.ViewModels;
+using BookWorms.Model;
+using BookWorms.ViewModels;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -11,7 +11,7 @@ using System;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
 
-namespace WebApplication1.Pages
+namespace BookWorms.Pages
 {
     public class RegisterModel : PageModel
     {

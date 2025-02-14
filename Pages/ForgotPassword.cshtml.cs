@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Text;
 using System.Threading.Tasks;
-using WebApplication1.Model;
-using WebApplication1.Services;
+using BookWorms.Model;
+using BookWorms.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
-namespace WebApplication1.Pages
+namespace BookWorms.Pages
 {
     public class ForgotPasswordModel : PageModel
     {

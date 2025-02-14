@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebApplication1.Pages.errors
+namespace BookWorms.Pages.errors
 {
     public class custom404Model : PageModel
     {

@@ -7,12 +7,12 @@ using System.Security.Claims;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using WebApplication1.Model;
-using WebApplication1.Services;
-using WebApplication1.ViewModels;
+using BookWorms.Model;
+using BookWorms.Services;
+using BookWorms.ViewModels;
 using Microsoft.Extensions.Configuration;
 
-namespace WebApplication1.Pages
+namespace BookWorms.Pages
 {
     public class LoginModel : PageModel
     {

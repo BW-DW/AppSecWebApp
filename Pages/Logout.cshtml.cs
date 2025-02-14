@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using WebApplication1.Model;
+using BookWorms.Model;
 
-namespace WebApplication1.Pages
+namespace BookWorms.Pages
 {
     public class LogoutModel : PageModel
     {

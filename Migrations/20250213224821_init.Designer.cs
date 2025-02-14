@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WebApplication1.Model;
+using BookWorms.Model;
 
 #nullable disable
 
-namespace WebApplication1.Migrations
+namespace BookWorms.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
     [Migration("20250213224821_init")]
@@ -158,7 +158,7 @@ namespace WebApplication1.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("WebApplication1.Model.ApplicationUser", b =>
+            modelBuilder.Entity("BookWorms.Model.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -253,7 +253,7 @@ namespace WebApplication1.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("WebApplication1.Model.PasswordHistory", b =>
+            modelBuilder.Entity("BookWorms.Model.PasswordHistory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -279,7 +279,7 @@ namespace WebApplication1.Migrations
                     b.ToTable("PasswordHistories");
                 });
 
-            modelBuilder.Entity("WebApplication1.Models.AuditLog", b =>
+            modelBuilder.Entity("BookWorms.Models.AuditLog", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -318,7 +318,7 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("WebApplication1.Model.ApplicationUser", null)
+                    b.HasOne("BookWorms.Model.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -327,7 +327,7 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("WebApplication1.Model.ApplicationUser", null)
+                    b.HasOne("BookWorms.Model.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -342,7 +342,7 @@ namespace WebApplication1.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebApplication1.Model.ApplicationUser", null)
+                    b.HasOne("BookWorms.Model.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -351,16 +351,16 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("WebApplication1.Model.ApplicationUser", null)
+                    b.HasOne("BookWorms.Model.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WebApplication1.Model.PasswordHistory", b =>
+            modelBuilder.Entity("BookWorms.Model.PasswordHistory", b =>
                 {
-                    b.HasOne("WebApplication1.Model.ApplicationUser", "User")
+                    b.HasOne("BookWorms.Model.ApplicationUser", "User")
                         .WithMany("PasswordHistories")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -369,7 +369,7 @@ namespace WebApplication1.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("WebApplication1.Model.ApplicationUser", b =>
+            modelBuilder.Entity("BookWorms.Model.ApplicationUser", b =>
                 {
                     b.Navigation("PasswordHistories");
                 });

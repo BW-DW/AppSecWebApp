@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using WebApplication1.Models;
+using BookWorms.Models;
 
-namespace WebApplication1.Model
+namespace BookWorms.Model
 {
     public class AuthDbContext : IdentityDbContext<ApplicationUser>
     {

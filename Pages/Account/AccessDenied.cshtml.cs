@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebApplication1.Pages.Account
+namespace BookWorms.Pages.Account
 {
     public class AccessDentiedModel : PageModel
     {
