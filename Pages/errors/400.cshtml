@@ -1,0 +1,15 @@
+﻿@page
+@model WebApplication1.Pages.errors.custom400Model
+@{
+    ViewData["title"] = "Page does not exists";
+}
+
+<div class="container" style="text-align: center; color: #888;">
+    <h1 style="font-size: 150px; color: #888; margin-bottom: 0px;">400</h1>
+    <p style="font-size: 50px; ">Bad Request</p>
+    <p>
+        Request is not recognized by server because of errors in syntax. Request should be changed with
+        corrected syntax.
+    </p>
+    <p>Please navigate back to <a href="https://localhost:7257/Login">Login</a></p>
+</div>

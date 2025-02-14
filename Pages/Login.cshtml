@@ -1,36 +1,71 @@
 ﻿@page
 @model WebApplication1.Pages.LoginModel
 @{
+    var siteKey = ViewData["RecaptchaSiteKey"] as string;
 }
+
+<head>
+    <script src="https://www.google.com/recaptcha/api.js?render=@siteKey"></script>
+</head>
+
+@if (ViewData["RecaptchaScore"] != null)
+{
+    <div class="alert alert-info">
+        @ViewData["RecaptchaScore"]
+    </div>
+}
+
 <div class="container mt-5">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-sm-12 col-md-12 col-lg-4">
+            <h1 class="mb-3">Login</h1>
 
-	<div class="row justify-content-center align-items-center">
+            @try
+            {
+                <form method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
 
-		<div class="col-sm-12 col-md-12 col-lg-4">
-			<h1 class="mb-3">Login </h1>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="LModel.Email">Email Address</label>
+                        <input type="text" asp-for="LModel.Email" class="form-control" />
+                        <span asp-validation-for="LModel.Email" class="text-danger"></span>
+                    </div>
 
-			<form method="post">
-				<div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="LModel.Password">Password</label>
+                        <input type="password" asp-for="LModel.Password" class="form-control" />
+                        <span asp-validation-for="LModel.Password" class="text-danger"></span>
+                    </div>
 
-				<div class="mb-3">
-					<label class="form-label" asp-for="LModel.Email">Email Address</label>
-					<input type="Text" asp-for="LModel.Email" class="form-control" />
-					<span asp-validation-for="LModel.Email" class="text-danger"></span>
-				</div>
+                    <input type="hidden" id="recaptchaToken" asp-for="LModel.RecaptchaToken" />
 
-				<div class="mb-3">
-					<label class="form-label" asp-for="LModel.Password">Password</label>
-					<input type="Text" asp-for="LModel.Password" class="form-control" />
-					<span asp-validation-for="LModel.Password" class="text-danger"></span>
-				</div>
+                    <p><a asp-page="ForgotPassword">I forgot my password</a></p>
 
-				<p><a asp-page="ForgotPassword">I forgot my password</a></p>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                </form>
+            }
+            catch (Exception ex)
+            {
+                <div class="alert alert-danger">
+                    An error occurred while processing your request. Please try again later.
+                </div>
 
-				<div class="mb-3">
-					<button type="submit" class="btn btn-primary">Login</button>
-				</div>
-			</form>
+                <!-- Log the error for debugging (avoid showing sensitive details to the user) -->
+                <script>
+                    console.error("Login error:", @Html.Raw(Json.Serialize(ex.Message)));
+                </script>
+            }
 
-		</div>
-	</div>
+            <script>
+                grecaptcha.ready(function () {
+                    grecaptcha.execute('@siteKey', { action: 'login' }).then(function (token) {
+                        document.getElementById('recaptchaToken').value = token;
+                    });
+                });
+            </script>
+
+        </div>
+    </div>
 </div>

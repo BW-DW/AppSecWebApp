@@ -10,62 +10,99 @@
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
-@if (User.Identity.IsAuthenticated && Model.CurrentUser != null)
+@try
 {
-    <h2>User Information</h2>
-
-    @if (!string.IsNullOrEmpty(Model.CurrentUser.ProfilePicture))
+    if (User.Identity.IsAuthenticated && Model.CurrentUser != null)
     {
-        <div>
-            <h3>Profile Picture</h3>
-            <img src="@Url.Content("~/images/profiles/" + Model.CurrentUser.ProfilePicture)" alt="User Profile Image" class="img-fluid" style="max-width: 150px; border-radius: 50%;" />
-        </div>
+        <h2>User Information</h2>
+
+        @try
+        {
+            if (!string.IsNullOrEmpty(Model.CurrentUser.ProfilePicture))
+            {
+                <div>
+                    <h3>Profile Picture</h3>
+                    <img src="@Url.Content("~/images/profiles/" + Model.CurrentUser.ProfilePicture)"
+                         alt="User Profile Image" class="img-fluid"
+                         style="max-width: 150px; border-radius: 50%;" />
+                </div>
+            }
+        }
+        catch (Exception ex)
+        {
+            <div class="alert alert-warning">Error displaying profile picture. Please try again later.</div>
+            <script>console.error("Profile picture error:", @Html.Raw(Json.Serialize(ex.Message)));</script>
+        }
+
+        <table class="table table-bordered">
+            @try
+            {
+                <tr>
+                    <th>First Name</th>
+                    <td>@Model.CurrentUser.FirstName</td>
+                </tr>
+                <tr>
+                    <th>Last Name</th>
+                    <td>@Model.CurrentUser.LastName</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>@Model.CurrentUser.Email</td>
+                </tr>
+                <tr>
+                    <th>Phone Number</th>
+                    <td>@Model.CurrentUser.PhoneNumber</td>
+                </tr>
+                <tr>
+                    <th>Billing Address</th>
+                    <td>@Model.CurrentUser.BillingAddress</td>
+                </tr>
+                <tr>
+                    <th>Shipping Address</th>
+                    <td>@Model.CurrentUser.ShippingAddress</td>
+                </tr>
+                <tr>
+                    <th>Credit Card</th>
+                    <td>@Model.DecryptedCreditCard</td>
+                </tr>
+                <tr>
+                    <th>Hashed Password</th>
+                    <td>@Model.HashedPassword</td>
+                </tr>
+            }
+            catch (Exception ex)
+            {
+                <tr>
+                    <td colspan="2" class="text-danger">Error retrieving user details.</td>
+                </tr>
+                <script>console.error("User details error:", @Html.Raw(Json.Serialize(ex.Message)));</script>
+            }
+        </table>
+
+        <p><strong>Email:</strong> @Model.CurrentUser?.Email</p>
+        <p><strong>Two-Factor Authentication:</strong> @(Model.CurrentUser.TwoFactorEnabled ? "Enabled" : "Disabled")</p>
+
+        @try
+        {
+            <form method="post">
+                <button type="submit" asp-page-handler="Toggle2FA" class="btn btn-primary">
+                    @(Model.CurrentUser.TwoFactorEnabled ? "Disable 2FA" : "Enable 2FA")
+                </button>
+            </form>
+        }
+        catch (Exception ex)
+        {
+            <div class="alert alert-danger">Error updating Two-Factor Authentication settings.</div>
+            <script>console.error("2FA error:", @Html.Raw(Json.Serialize(ex.Message)));</script>
+        }
     }
-
-    <table class="table table-bordered">
-        <tr>
-            <th>First Name</th>
-            <td>@Model.CurrentUser.FirstName</td>
-        </tr>
-        <tr>
-            <th>Last Name</th>
-            <td>@Model.CurrentUser.LastName</td>
-        </tr>
-        <tr>
-            <th>Email</th>
-            <td>@Model.CurrentUser.Email</td>
-        </tr>
-        <tr>
-            <th>Phone Number</th>
-            <td>@Model.CurrentUser.PhoneNumber</td>
-        </tr>
-        <tr>
-            <th>Billing Address</th>
-            <td>@Model.CurrentUser.BillingAddress</td>
-        </tr>
-        <tr>
-            <th>Shipping Address</th>
-            <td>@Model.CurrentUser.ShippingAddress</td>
-        </tr>
-        <tr>
-            <th>Credit Card</th>
-            <td>@Model.DecryptedCreditCard</td>
-        </tr>
-        <tr>
-            <th>Hashed Password</th>
-            <td>@Model.HashedPassword</td>
-        </tr>
-    </table>
-    <p><strong>Email:</strong> @Model.CurrentUser?.Email</p>
-    <p><strong>Two-Factor Authentication:</strong> @(Model.CurrentUser.TwoFactorEnabled ? "Enabled" : "Disabled")</p>
-
-    <form method="post">
-        <button type="submit" asp-page-handler="Toggle2FA" class="btn btn-primary">
-            @(Model.CurrentUser.TwoFactorEnabled ? "Disable 2FA" : "Enable 2FA")
-        </button>
-    </form>
+    else
+    {
+        <p>You are not logged in.</p>
+    }
 }
-else
+catch (Exception ex)
 {
-    <p>You are not logged in.</p>
+    <div class="alert alert-danger">An unexpected error occurred. Please try again later.</div>
+    <script>console.error("Page error:", @Html.Raw(Json.Serialize(ex.Message)));</script>
 }

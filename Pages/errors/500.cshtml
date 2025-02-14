@@ -1,0 +1,16 @@
+﻿@page
+@model WebApplication1.Pages.errors.custom500Model
+@{
+    ViewData["title"] = "Page does not exists";
+}
+
+<div class="container" style="text-align: center; color: #888;">
+    <h1 style="font-size: 150px; color: #888; margin-bottom: 0px;">500</h1>
+    <p style="font-size: 50px; ">Internal Server Error</p>
+    <p>
+        This is very common error; client doesn't know what the problem is. Server only tells that there is some
+        problem on server side. But, on the server side are usually more information provided. If server hosts
+        ASP.NET application, then this often means that there is an error in ASP.NET application.
+    </p>
+    <p>Please navigate back to <a href="https://localhost:7257/Login">Login</a></p>
+</div>

@@ -8,148 +8,163 @@
         <div class="col-sm-12 col-md-12 col-lg-4">
             <h1 class="mb-3">Register</h1>
 
-            <form method="post" enctype="multipart/form-data">
-                <div asp-validation-summary="All" class="text-danger"></div>
+            @try
+            {
+                <form method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="All" class="text-danger"></div>
 
-                <div class="mb-3">
-                    <label class="form-label" asp-for="RModel.FirstName">First Name</label>
-                    <input type="text" asp-for="RModel.FirstName" class="form-control" required />
-                    <span asp-validation-for="RModel.FirstName" class="text-danger"></span>
-                </div>
+                    @try
+                    {
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="RModel.FirstName">First Name</label>
+                            <input type="text" asp-for="RModel.FirstName" class="form-control" required />
+                            <span asp-validation-for="RModel.FirstName" class="text-danger"></span>
+                        </div>
 
-                <div class="mb-3">
-                    <label class="form-label" asp-for="RModel.LastName">Last Name</label>
-                    <input type="text" asp-for="RModel.LastName" class="form-control" required />
-                    <span asp-validation-for="RModel.LastName" class="text-danger"></span>
-                </div>
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="RModel.LastName">Last Name</label>
+                            <input type="text" asp-for="RModel.LastName" class="form-control" required />
+                            <span asp-validation-for="RModel.LastName" class="text-danger"></span>
+                        </div>
 
-                <div class="mb-3">
-                    <label class="form-label" asp-for="RModel.Email">Email Address</label>
-                    <input type="email" asp-for="RModel.Email" class="form-control" required />
-                    <span asp-validation-for="RModel.Email" class="text-danger"></span>
-                </div>
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="RModel.Email">Email Address</label>
+                            <input type="email" asp-for="RModel.Email" class="form-control" required />
+                            <span asp-validation-for="RModel.Email" class="text-danger"></span>
+                        </div>
+                    }
+                    catch (Exception ex)
+                    {
+                        <div class="alert alert-danger">Error loading form fields. Please refresh and try again.</div>
+                        <script>console.error("Form fields error:", @Html.Raw(Json.Serialize(ex.Message)));</script>
+                    }
 
-                <div class="form-group">
-                    <label asp-for="RModel.Password"></label>
-                    <input asp-for="RModel.Password" type="password" class="form-control" id="passwordInput" required />
-                    <span asp-validation-for="RModel.Password" class="text-danger"></span>
-                    <small id="passwordHelp" class="form-text text-muted"></small>
+                    <div class="form-group">
+                        <label asp-for="RModel.Password"></label>
+                        <input asp-for="RModel.Password" type="password" class="form-control" id="passwordInput" required />
+                        <span asp-validation-for="RModel.Password" class="text-danger"></span>
+                        <small id="passwordHelp" class="form-text text-muted"></small>
 
-                    <div class="progress mt-2">
-                        <div id="passwordStrengthBar" class="progress-bar" role="progressbar" style="width: 0%;"></div>
+                        <div class="progress mt-2">
+                            <div id="passwordStrengthBar" class="progress-bar" role="progressbar" style="width: 0%;"></div>
+                        </div>
                     </div>
-                    <small id="passwordHelp" class="form-text"></small>
-                </div>
 
-                <div class="mb-3">
-                    <label class="form-label" asp-for="RModel.ConfirmPassword">Confirm Password</label>
-                    <input type="password" asp-for="RModel.ConfirmPassword" class="form-control" required />
-                    <span asp-validation-for="RModel.ConfirmPassword" class="text-danger"></span>
-                </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="RModel.ConfirmPassword">Confirm Password</label>
+                        <input type="password" asp-for="RModel.ConfirmPassword" class="form-control" required />
+                        <span asp-validation-for="RModel.ConfirmPassword" class="text-danger"></span>
+                    </div>
 
-                <div class="mb-3">
-                    <label class="form-label" asp-for="RModel.PhoneNumber">Phone Number</label>
-                    <input type="tel" asp-for="RModel.PhoneNumber" class="form-control" required />
-                    <span asp-validation-for="RModel.PhoneNumber" class="text-danger"></span>
-                </div>
+                    @try
+                    {
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="RModel.PhoneNumber">Phone Number</label>
+                            <input type="tel" asp-for="RModel.PhoneNumber" class="form-control" required />
+                            <span asp-validation-for="RModel.PhoneNumber" class="text-danger"></span>
+                        </div>
 
-                <div class="mb-3">
-                    <label class="form-label" asp-for="RModel.BillingAddress">Billing Address</label>
-                    <textarea asp-for="RModel.BillingAddress" class="form-control" rows="3" required></textarea>
-                    <span asp-validation-for="RModel.BillingAddress" class="text-danger"></span>
-                </div>
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="RModel.BillingAddress">Billing Address</label>
+                            <textarea asp-for="RModel.BillingAddress" class="form-control" rows="3" required></textarea>
+                            <span asp-validation-for="RModel.BillingAddress" class="text-danger"></span>
+                        </div>
 
-                <div class="mb-3">
-                    <label class="form-label" asp-for="RModel.ShippingAddress">Shipping Address</label>
-                    <textarea asp-for="RModel.ShippingAddress" class="form-control" rows="3" required></textarea>
-                    <span asp-validation-for="RModel.ShippingAddress" class="text-danger"></span>
-                </div>
+                        <div class="mb-3">
+                            <label class="form-label" asp-for="RModel.ShippingAddress">Shipping Address</label>
+                            <textarea asp-for="RModel.ShippingAddress" class="form-control" rows="3" required></textarea>
+                            <span asp-validation-for="RModel.ShippingAddress" class="text-danger"></span>
+                        </div>
+                    }
+                    catch (Exception ex)
+                    {
+                        <div class="alert alert-danger">Error loading address fields.</div>
+                        <script>console.error("Address fields error:", @Html.Raw(Json.Serialize(ex.Message)));</script>
+                    }
 
-                <div class="mb-3">
-                    <label class="form-label" asp-for="RModel.CreditCard">Credit Card Number</label>
-                    <input type="text" asp-for="RModel.CreditCard" class="form-control" required />
-                    <span asp-validation-for="RModel.CreditCard" class="text-danger"></span>
-                </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="RModel.CreditCard">Credit Card Number</label>
+                        <input type="text" asp-for="RModel.CreditCard" class="form-control" required />
+                        <span asp-validation-for="RModel.CreditCard" class="text-danger"></span>
+                    </div>
 
-                <div class="form-group">
-                    <label asp-for="RModel.ProfilePicture">Profile Picture</label>
-                    <input asp-for="RModel.ProfilePicture" type="file" class="form-control" />
-                    <span asp-validation-for="RModel.ProfilePicture" class="text-danger"></span>
-                </div>
+                    <div class="form-group">
+                        <label asp-for="RModel.ProfilePicture">Profile Picture</label>
+                        <input asp-for="RModel.ProfilePicture" type="file" class="form-control" />
+                        <span asp-validation-for="RModel.ProfilePicture" class="text-danger"></span>
+                    </div>
 
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-primary">Register</button>
-                </div>
-            </form>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </div>
+                </form>
+            }
+            catch (Exception ex)
+            {
+                <div class="alert alert-danger">An unexpected error occurred. Please try again later.</div>
+                <script>console.error("Page error:", @Html.Raw(Json.Serialize(ex.Message)));</script>
+            }
 
             <script>
-            document.getElementById("passwordInput").addEventListener("input", function () {
-                var password = this.value;
-                var passwordHelp = document.getElementById("passwordHelp");
-    
-                var errors = [];
-                if (password.length < 8) errors.push("At least 8 characters required.");
-                if (!/[A-Z]/.test(password)) errors.push("At least one uppercase letter required.");
-                if (!/[a-z]/.test(password)) errors.push("At least one lowercase letter required.");
-                if (!/[0-9]/.test(password)) errors.push("At least one digit required.");
-                if (!/[!#$%^&*(),.?":{}|<>]/.test(password)) errors.push("At least one special character required.");
-    
-                passwordHelp.innerHTML = errors.length > 0 ? errors.join("<br>") : "Password is valid.";
-                passwordHelp.style.color = errors.length > 0 ? "red" : "green";
-            });
+                try {
+                    document.getElementById("passwordInput").addEventListener("input", function () {
+                        var password = this.value;
+                        var passwordHelp = document.getElementById("passwordHelp");
+
+                        var errors = [];
+                        if (password.length < 8) errors.push("At least 8 characters required.");
+                        if (!/[A-Z]/.test(password)) errors.push("At least one uppercase letter required.");
+                        if (!/[a-z]/.test(password)) errors.push("At least one lowercase letter required.");
+                        if (!/[0-9]/.test(password)) errors.push("At least one digit required.");
+                        if (!/[!#$%^&*(),.?\":{}|<>]/.test(password)) errors.push("At least one special character required.");
+
+                        passwordHelp.innerHTML = errors.length > 0 ? errors.join("<br>") : "Password is valid.";
+                        passwordHelp.style.color = errors.length > 0 ? "red" : "green";
+                    });
+                } catch (error) {
+                    console.error("Password validation script error:", error);
+                }
             </script>
 
             <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    var passwordInput = document.getElementById("passwordInput");
-                    var passwordStrengthText = document.getElementById("passwordHelp");
-                    var passwordStrengthBar = document.getElementById("passwordStrengthBar");
+                try {
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var passwordInput = document.getElementById("passwordInput");
+                        var passwordStrengthText = document.getElementById("passwordHelp");
+                        var passwordStrengthBar = document.getElementById("passwordStrengthBar");
 
-                    passwordInput.addEventListener("input", function () {
-                        var password = this.value;
-                        var strength = 0;
-                        var messages = [];
+                        passwordInput.addEventListener("input", function () {
+                            var password = this.value;
+                            var strength = 0;
+                            var messages = [];
 
-                        // ✅ Check password strength criteria
-                        if (password.length >= 8) strength++;
-                        else messages.push("At least 8 characters required.");
+                            if (password.length >= 8) strength++;
+                            else messages.push("At least 8 characters required.");
 
-                        if (/[A-Z]/.test(password)) strength++;
-                        else messages.push("At least one uppercase letter required.");
+                            if (/[A-Z]/.test(password)) strength++;
+                            else messages.push("At least one uppercase letter required.");
 
-                        if (/[a-z]/.test(password)) strength++;
-                        else messages.push("At least one lowercase letter required.");
+                            if (/[a-z]/.test(password)) strength++;
+                            else messages.push("At least one lowercase letter required.");
 
-                        if (/[0-9]/.test(password)) strength++;
-                        else messages.push("At least one digit required.");
+                            if (/[0-9]/.test(password)) strength++;
+                            else messages.push("At least one digit required.");
 
-                        if (/[!#$%^&*(),.?\":{}|<>]/.test(password)) strength++;
-                        else messages.push("At least one special character required.");
+                            if (/[!#$%^&*(),.?\":{}|<>]/.test(password)) strength++;
+                            else messages.push("At least one special character required.");
 
-                        // ✅ Set password strength feedback
-                        var strengthText = "";
-                        var strengthColor = "";
-                        var strengthWidth = "0%";
+                            var strengthText = strength === 5 ? "Strong" : strength >= 3 ? "Moderate" : "Weak";
+                            var strengthColor = strength === 5 ? "bg-success" : strength >= 3 ? "bg-warning" : "bg-danger";
+                            var strengthWidth = strength === 5 ? "100%" : strength >= 3 ? "60%" : "30%";
 
-                        if (strength === 5) {
-                            strengthText = "Strong";
-                            strengthColor = "bg-success";
-                            strengthWidth = "100%";
-                        } else if (strength >= 3) {
-                            strengthText = "Moderate";
-                            strengthColor = "bg-warning";
-                            strengthWidth = "60%";
-                        } else {
-                            strengthText = "Weak";
-                            strengthColor = "bg-danger";
-                            strengthWidth = "30%";
-                        }
-
-                        passwordStrengthText.innerHTML = messages.length === 0 ? `<strong>${strengthText}</strong>` : messages.join("<br>");
-                        passwordStrengthBar.style.width = strengthWidth;
-                        passwordStrengthBar.className = `progress-bar ${strengthColor}`;
+                            passwordStrengthText.innerHTML = messages.length === 0 ? `<strong>${strengthText}</strong>` : messages.join("<br>");
+                            passwordStrengthBar.style.width = strengthWidth;
+                            passwordStrengthBar.className = `progress-bar ${strengthColor}`;
+                        });
                     });
-                });
+                } catch (error) {
+                    console.error("Password strength script error:", error);
+                }
             </script>
         </div>
     </div>
